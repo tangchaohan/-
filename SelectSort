@@ -1,0 +1,48 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SelectSort
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] arrayData = new int[] { 5, 20, 7, 15, 98, 65, 31, 1, 41, 6, 107, 22, 12 };
+            //选择排序
+            SelectSort(arrayData);
+            foreach (int param in arrayData)
+            {
+                Console.WriteLine(param.ToString());
+            }
+            Console.ReadKey();
+        }
+
+        ///<summary>
+        /// 选择排序
+        /// </summary>
+        ///<param name="sortArray"></param>
+        /// <returns></returns>
+        public static void SelectSort(int[] sortArray)
+        {
+            for (int i = 0; i < sortArray.Length - 1; i++)
+            {
+                int minNumber = i;
+                for (int j = i + 1; j < sortArray.Length; j++)
+                {
+                    if (sortArray[minNumber] > sortArray[j])
+                    { minNumber = j; }
+                }
+                if (minNumber != i)
+                {
+                    int param = sortArray[i];
+                    sortArray[i] = sortArray[minNumber];
+                    sortArray[minNumber] = param;
+                }
+            }
+        }
+
+    }
+}
