@@ -1,0 +1,104 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace bubblesort
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] arrayData = new int[] { 5, 20, 7, 15, 98, 65, 31, 1, 41, 6, 107, 22, 12 };
+            //交换排序
+            ExchangeSort(arrayData);
+            foreach (int param in arrayData)
+            {
+                Console.WriteLine(param.ToString());
+            }
+            //冒泡排序
+            int[] arrayData2 = new int[] { 5, 20, 7, 15, 98, 65, 31, 1, 41, 6, 107, 22, 12 };
+            BubbleSort(arrayData2);
+            foreach (int param in arrayData2)
+            {
+                Console.WriteLine(param.ToString());
+            }
+            //优化冒泡排序
+            int[] arrayData3 = new int[] { 5, 20, 7, 15, 98, 65, 31, 1, 41, 6, 107, 22, 12 };
+            OptimizedBubbleSort(arrayData3);
+            foreach (int param in arrayData3)
+            {
+                Console.WriteLine(param.ToString());
+            }
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        ///简单交换排序
+        /// </summary>
+        /// <param name="sortNumber">待排序的数组</param>
+        /// <returns></returns>
+        public static void ExchangeSort( int[] sortNumber)
+        {
+            for (int i = 0; i < sortNumber.Length - 1; i++)
+            {
+                for (int j = i + 1; j < sortNumber.Length; j++)
+                {
+                    if (sortNumber[i] > sortNumber[j])
+                    {
+                        int param = sortNumber[i];
+                        sortNumber[i] = sortNumber[j];
+                        sortNumber[j] = param;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        ///冒泡排序
+        /// </summary>
+        /// <param name="sortNumber">待排序的数组</param>
+        /// <returns></returns>
+        public static void BubbleSort(int[] sortNumber)
+        {
+            //i,j的前进方向要相反
+            for (int i = 0; i < sortNumber.Length - 1; i++)
+            {
+                for (int j=sortNumber.Length-2; j>=i; j--)
+                {
+                    if (sortNumber[j] > sortNumber[j+1])
+                    {
+                        int param = sortNumber[j];
+                        sortNumber[j] = sortNumber[j+1];
+                        sortNumber[j + 1] = param;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        ///优化的冒泡排序
+        /// </summary>
+        /// <param name="sortNumber">待排序的数组</param>
+        /// <returns></returns>
+        public static void OptimizedBubbleSort(int[] sortNumber)
+        {
+            bool flag = true;//标志位，如果在某次循环没有发生交换，说明已经拍好序
+            for (int i = 0; i < sortNumber.Length - 1 && flag; i++)
+            {
+                flag = false;
+                for (int j = sortNumber.Length - 2; j >= i; j--)
+                {
+                    if (sortNumber[j] > sortNumber[j + 1])
+                    {
+                        int param = sortNumber[j];
+                        sortNumber[j] = sortNumber[j + 1];
+                        sortNumber[j + 1] = param;
+                        flag = true;
+                    }
+                }
+            }
+        }
+    }
+}
