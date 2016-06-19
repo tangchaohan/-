@@ -1,0 +1,107 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace StraightInsertionSort
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //简单插入排序
+            int[] arrayData = new int[] { 5, 20, 7, 15, 98, 65, 31, 1, 41, 6, 107, 22, 12 };
+            StraightInsertionSort(arrayData);
+            foreach (int param in arrayData)
+            {
+                Console.WriteLine(param.ToString());
+            }
+            //二分插入排序
+            int[] arrayData2 = new int[] { 5, 20, 7, 15, 98, 65, 31, 1, 41, 6, 107, 22, 12 };
+            OptimizedStraightInsertionSort(arrayData2);
+            foreach (int param in arrayData2)
+            {
+                Console.WriteLine(param.ToString());
+            }
+            Console.ReadKey();
+        }
+
+        ///<summary>
+        /// 简单插入排序
+        /// </summary>
+        /// <param name"sortArray">待排序数组</param>
+        /// <returns></returns>
+        public static void StraightInsertionSort(int[] sortArray)
+        {
+            for (int i = 1; i < sortArray.Length; i++)
+            {
+                if (sortArray[i] < sortArray[i - 1])
+                {
+                    int j, param = sortArray[i];
+                    //书中数组从1开始，所以设置0为哨兵，这里加一个j>=0的判断
+                    for ( j = i - 1; j>=0 && sortArray[j] > param; j--)
+                    {
+                        sortArray[j + 1] = sortArray[j];
+                    }
+                    sortArray[j + 1] = param;
+                }
+            }
+        }
+
+        ///<summary>
+        /// 二分插入排序
+        /// </summary>
+        /// <param name"sortArray">待排序数组</param>
+        /// <returns></returns>
+        public static void OptimizedStraightInsertionSort(int[] sortArray)
+        {
+            for (int i = 1; i < sortArray.Length; i++)
+            {
+                if (sortArray[i] < sortArray[i - 1])
+                {
+                    int mid=0,low = 0, high = i - 1;
+                    while (high - low >0)
+                    {
+                         mid = (high + low) / 2;
+                        if (sortArray[i] < sortArray[mid])
+                        {
+                            if (mid == low)//即high-low==1
+                            {
+                                mid = low ;
+                                break;
+                            }
+                            else
+                            {
+                                high = mid;
+                            }
+                        }
+                        else if (sortArray[i] > sortArray[mid])
+                        {
+                            if (mid == low)//即high-low==1
+                            {
+                                mid = low + 1;
+                                break;
+                            }
+                            else
+                            {
+                                low = mid;
+                            }
+                        }
+                        else
+                        {
+                           mid++;
+                            break;
+                        }
+                    }
+                    int param = sortArray[i];
+                    for (int j = i; j > mid; j--)
+                    {
+                        sortArray[j] = sortArray[j - 1];
+                    }
+                    sortArray[mid] = param;
+                }
+            }
+        }
+    }
+}
