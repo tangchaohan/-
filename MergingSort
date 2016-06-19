@@ -1,0 +1,152 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace MergingSort
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //归并排序
+            int[] arrayData = new int[] { 5, 20, 7, 15, 98, 65, 31, 1, 41, 6, 107, 22, 12};
+            MergingSort(arrayData);
+            foreach (int param in arrayData)
+            {
+                Console.WriteLine(param.ToString());
+            }
+            //循环实现的归并排序
+            int[] arrayData2 = new int[] { 5, 20, 7, 15, 98, 65, 31, 4, 41, 6, 107, 22,1 ,58,34};
+            CirculationMergingSort(arrayData2);
+            foreach (int param in arrayData2)
+            {
+                Console.WriteLine(param.ToString());
+            }
+            Console.ReadKey();
+        }
+
+        ///<summary>
+        /// 归并排序
+        /// </summary>
+        /// <param name"sortArray">待排序数组</param>
+        /// <returns></returns>
+        public static void MergingSort(int[] sortArray)
+        {
+            Msort(sortArray, sortArray, 0, sortArray.Length - 1);
+        }
+
+        ///<summary>
+        /// 归并排序
+        /// </summary>
+        /// <param name"SR">输入的待排序数组</param>
+        /// <param name"TR1">输出的排序数组</param>
+        /// <param name"s">数组的左边第一位编号</param>
+        /// <param name"t">数组的右边第一位编号</param>
+        /// <returns></returns>
+        public static void Msort(int[] SR, int[] TR1, int s, int t)
+        {
+            int m;
+            int[] TR2 = new int[SR.Length];
+            if (s == t)
+            {
+                TR1[s] = SR[s];
+            }
+            else
+            {
+                m = (s + t) / 2;//将SR分成两半
+                Msort(SR, TR2, s, m);
+                Msort(SR, TR2, m + 1, t);
+                Merge(TR2, TR1, s, m, t);//归并到一个数组中
+            }
+        }
+
+        ///<summary>
+        ///将有序数组SR归并为有序的TR
+        /// </summary>
+        /// <param name"SR">输入数组</param>
+        /// <param name"TR1">输出完成归并的数组</param>
+        /// <param name"s">数组的左边第一位编号</param>
+        /// <param name"m">数组的中间分隔编号</param>
+        /// <param name"n">数组的右边第一位编号</param>
+        /// <returns></returns>
+        public static void Merge(int[] SR, int[] TR, int i, int m, int n)
+        {
+            int j, k, p;
+            for (j = m + 1, k = i; i <= m && j <= n; k++)//将SR中的记录由小到大归并到TR中
+            {
+                if (SR[i] < SR[j])
+                {
+                    TR[k] = SR[i++];
+                }
+                else
+                {
+                    TR[k] = SR[j++];
+                }
+            }
+            if (i <= m)//左侧还有剩
+            {
+                for (p = 0; p <=m-i; p++)
+                {
+                    TR[k + p] = SR[i + p];
+                }
+            }
+            if (j <= n)//右侧还有剩
+            {
+                for (p = 0; p <= n - j; p++)
+                {
+                    TR[k + p] = SR[j + p];
+                }
+            }
+        }
+
+        ///<summary>
+        /// 循环的归并排序
+        /// </summary>
+        /// <param name"sortArray">待排序数组</param>
+        /// <returns></returns>
+        public static void CirculationMergingSort(int[] sortArray)
+        {
+            int[] tempArray = new int[sortArray.Length];//构建一个相同长度的数组
+            int k = 1;
+            while (k < sortArray.Length)
+            {
+                MergePass(sortArray, tempArray, k, sortArray.Length - 1);
+                k = 2 * k;
+                MergePass(tempArray, sortArray, k, sortArray.Length - 1);
+                k = 2 * k;
+               
+            }
+        }
+
+        ///<summary>
+        /// 将SR中相邻长度为s的子序列两两归并到TR中
+        /// </summary>
+        /// <param name"SR">输入的待排序数组</param>
+        /// <param name"TR">输出的排序数组</param>
+        /// <param name"s">相邻长度</param>
+        /// <param name"n"></param>
+        /// <returns></returns>
+        public static void MergePass(int[] SR, int[] TR, int s, int n)
+        {
+            int i = 0;
+            int j;
+            while (i <= n - 2*s+1 )
+            {
+                Merge(SR, TR, i, i + s - 1, i + 2 * s - 1);
+                i = i + 2 * s;
+            }
+            if (i < n - s + 1)//归并最后的s,n-s个序列
+            {
+                Merge(SR, TR, i, i + s - 1, n);
+            }
+            else//最后只剩下单个子序列，个数不够s个
+            {
+                for (j = i; j <= n; j++)
+                {
+                    TR[j] = SR[j];
+                }
+            }
+        }
+    }
+}
