@@ -1,0 +1,82 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace QuickSort
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //快速排序
+            int[] arrayData = new int[] { 5, 20, 7, 15, 98, 65, 31, 1, 41, 6, 107, 22, 12 };
+            QuickSort(arrayData);
+            foreach (int param in arrayData)
+            {
+                Console.WriteLine(param.ToString());
+            }
+            Console.ReadKey();
+        }
+
+        ///<summary>
+        /// 快速排序
+        /// </summary>
+        /// <param name"sortArray">待排序数组</param>
+        /// <returns></returns>
+        public static void QuickSort(int[] sortArray)
+        {
+            QSort(sortArray, 0, sortArray.Length - 1);
+        }
+
+        ///<summary>
+        /// 快速排序
+        /// </summary>
+        /// <param name"sortArray">待排序数组</param>
+        /// <param name"low">待排序数组左侧编号</param>
+        /// <param name"high">待排序数组右侧编号</param>
+        /// <returns></returns>
+        public static void QSort(int[] sortArray, int low, int high)
+        {
+            int pivot;
+       //     if (low < high)
+       //    {
+       //         pivot = Partition(sortArray, low, high);
+       //         QSort(sortArray, low, pivot - 1);
+       //         QSort(sortArray, pivot + 1, high);
+        //    }
+            while (low < high)//尾递归优化
+            {
+                pivot = Partition(sortArray, low, high);
+                QSort(sortArray, low, pivot - 1);//pivot是值类型，传进去后不会改变
+                low = pivot + 1;
+ 
+            }
+        }
+
+        ///<summary>
+        /// 快速排序
+        /// </summary>
+        /// <param name"sortArray">待排序数组</param>
+        /// <param name"low">待排序数组左侧编号</param>
+        /// <param name"high">待排序数组右侧编号</param>
+        /// <returns></returns>
+        public static int Partition(int[] sortArray, int low, int high)
+        {
+            int pivotkey;
+            pivotkey = sortArray[low];
+            int temp=pivotkey;//减少交换次数
+            while (low < high)
+            {
+                while (low < high && sortArray[high] >= pivotkey)
+                { high--; }
+                sortArray[low] = sortArray[high];//采用替换而不是交换
+                while (low < high && sortArray[low] <= pivotkey)
+                { low++; }
+                sortArray[high] = sortArray[low];
+            }
+            sortArray[low] = temp;
+            return low;
+        }
+    }
+}
