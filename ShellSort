@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ShellSort
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //希尔排序
+            int[] arrayData = new int[] { 5, 20, 7, 15, 98, 65, 31, 1, 41, 6, 107, 22, 12 };
+            ShellSort(arrayData);
+            foreach (int param in arrayData)
+            {
+                Console.WriteLine(param.ToString());
+            }
+            Console.ReadKey();
+        }
+
+        ///<summary>
+        /// 希尔排序
+        /// </summary>
+        /// <param name"sortArray">待排序数组</param>
+        /// <returns></returns>
+        public static void ShellSort(int[] sortArray)
+        {
+            int i, j;
+            int increment = sortArray.Length - 1;
+            do
+            {
+                increment = increment / 3 + 1;
+                for (i = increment ; i < sortArray.Length; i++)//i=increment使得从数组第一位开始比较
+                {
+                    if (sortArray[i] < sortArray[i - increment])
+                    {
+                        int param = sortArray[i];
+                        //保证按某个增量得到的一组数据是有序的，所以是一个循环
+                        for (j = i - increment; j >= 0 && sortArray[j] > param; j -= increment)
+                        {
+                            sortArray[j + increment] = sortArray[j];
+                        }
+                        sortArray[j + increment] = param;
+                    }
+                }
+            }
+            while (increment > 1);
+        }
+    }
+}
