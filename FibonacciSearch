@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace SequentialSearch
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] searchArray = new int[] { 1,5,9,15,19,21,24,27,35,39,41,43,46,57,96};
+            bool isInArray = FibonacciSearch(searchArray, 57);
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        ///斐波那契查找
+        /// </summary>
+        /// <param name="crossRay">表</param>
+        /// <param name="missRay1">匹配元素</param>
+        /// <returns></returns>
+        public static bool FibonacciSearch(int[] searchArray, int target)
+        {
+            if (searchArray == null || searchArray.Length == 0)//输入判断
+            { return false; }
+            int[] FibonacciArray=new int[]{0,1,1,2,3,5,8,13,21,34,55,89};//定义一个斐波那契数列
+            int low = 0;
+            int high = searchArray.Length - 1;
+            int k=0;
+            while(searchArray.Length-1> FibonacciArray[k]-1)
+            {k++;}
+            int[] implementArray=new int[FibonacciArray[k]];//创建扩展数组
+            for(int i=0;i<searchArray.Length;i++)
+            {implementArray[i]=searchArray[i];}
+            for (int j = searchArray.Length ; j < FibonacciArray[k]; j++)
+            { implementArray[j] = implementArray[searchArray.Length - 1]; }
+            int mid;
+            while (low <= high)
+            {
+                mid = low + FibonacciArray[k - 1];//斐波那契查找的关键
+                if (target < implementArray[mid])
+                { 
+                    high = mid - 1;
+                    k--;
+                }
+                else if (target > implementArray[mid])
+                {
+                    low = mid + 1;
+                    k = k - 2;
+                }
+                else
+                {
+                    if (mid < searchArray.Length)
+                    { return true; }
+                    else
+                    { return false; }
+                }
+
+            }
+            return false;
+        }
+    }
+}
