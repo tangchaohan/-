@@ -1,0 +1,44 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace SequentialSearch
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] searchArray = new int[] { 5, 50, 6, 7, 14, 63, 98, 24, 38, 75, 42, 15, 29 };
+            bool isInArray = SequentialSearch(searchArray, 15);
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        ///有哨兵的顺序表查找
+        /// </summary>
+        /// <param name="crossRay">表</param>
+        /// <param name="missRay1">匹配元素</param>
+        /// <returns></returns>
+        public static bool SequentialSearch(int[] searchArray, int target)
+        {
+            if (searchArray == null || searchArray.Length == 0)//输入判断
+            { return false; }
+            int i = searchArray.Length - 1;
+            if (searchArray[0] == target)//哨兵放在第一位，但是第一位有数值，先比较
+            { return false; }
+            int temp = searchArray[0];
+            searchArray[0] = target;
+            while (searchArray[i] != target)
+            {
+                i--;
+            }
+            searchArray[0] = temp;//不能改变表的数值
+            if (i != 0)
+            { return true; }
+            else
+            { return false; }
+        }
+    }
+}
+
