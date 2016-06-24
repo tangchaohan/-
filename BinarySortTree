@@ -1,0 +1,158 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace BinarySortTree
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+        }
+
+
+        /// <summary>
+        ///递归查找二叉排序树中是否有key
+        /// </summary>
+        /// <param name="crossNode1">根节点</param>
+        /// <param name="leftPoint">关键字</param>
+        /// <returns></returns>
+        public static bool SearchBST(TreeNode root, int key)
+        {
+            if (root == null)
+            {
+                return false;
+            }
+            else if (key == root.data)
+            {
+                return true;
+            }
+            else if (key < root.data)
+            {
+                return SearchBST(root.leftChild, key);
+            }
+            else
+            {
+                return SearchBST(root.rightChild, key);
+            }
+        }
+
+        /// <summary>
+        ///在二叉排序树中插入key,成功返回true
+        /// </summary>
+        /// <param name="crossNode1">根节点</param>
+        /// <param name="leftPoint">关键字</param>
+        /// <returns></returns>
+        public static bool InsertBST(TreeNode root, int key)
+        {
+            if (root == null)//输入判断
+            {
+                return false;
+            }
+            if (!SearchBST(root, key))//判断树中是否已有该值
+            {
+                return InsertKey(root, key);
+            }
+            else
+            { return false; }
+        }
+
+        public static bool InsertKey(TreeNode root, int key)
+        {
+            if (root == null)
+            {
+                return false;
+            }
+            {
+                if (key < root.data)
+                {
+                    if (root.leftChild == null)
+                    {
+                        TreeNode newNode = new TreeNode();
+                        newNode.data = key;
+                        root.leftChild = newNode;
+                        return true;
+                    }
+                    else
+                    { return InsertKey(root.leftChild, key); }
+                }
+                else
+                {
+                    if (root.rightChild == null)
+                    {
+                        TreeNode newNode = new TreeNode();
+                        newNode.data = key;
+                        root.rightChild = newNode;
+                        return true;
+                    }
+                    else
+                    { return InsertKey(root.rightChild, key); }
+                }
+            }
+        }
+
+        /// <summary>
+        ///在二叉排序树中删除key,成功返回true
+        /// </summary>
+        public static bool DeleteBST(TreeNode root,int key)
+        {
+            if (root == null)
+            { return false; }
+            if (key == root.data)
+            {
+                return Delete(root);
+            }
+            else if (key < root.data)
+            {
+                return DeleteBST(root.leftChild, key);
+            }
+            else
+            {
+                return DeleteBST(root.rightChild, key);
+            }
+        }
+
+        public static bool Delete(TreeNode node)
+        {
+            if (node.rightChild == null)//只有左子树
+            {
+                node = node.leftChild;
+            }
+            else if (node.leftChild == null)//只有右子树
+            {
+                node = node.rightChild;
+            }
+            else
+            {
+                TreeNode temp = node.leftChild;//node的直接前驱
+                TreeNode frontNode = node;//temp的父节点
+                while (temp.rightChild != null)
+                {
+                    frontNode = temp;
+                    temp = temp.rightChild;
+                }
+                node.data = temp.data;
+                if (frontNode != node)
+                {
+                    frontNode.rightChild = temp.leftChild;
+                }
+                else
+                {
+                    frontNode.leftChild = temp.leftChild;
+                }
+
+            }
+            return true;
+        }
+    }
+
+    public class TreeNode
+    {
+        public int data;
+        public TreeNode leftChild;
+        public TreeNode rightChild;
+
+
+    }
+}
