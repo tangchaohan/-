@@ -24,17 +24,17 @@ namespace BinarySortTree
             {
                 return false;
             }
-            else if (key == root.data)
+            else if (key == root.Data)
             {
                 return true;
             }
-            else if (key < root.data)
+            else if (key < root.Data)
             {
-                return SearchBST(root.leftChild, key);
+                return SearchBST(root.LeftChild, key);
             }
             else
             {
-                return SearchBST(root.rightChild, key);
+                return SearchBST(root.RightChild, key);
             }
         }
 
@@ -65,29 +65,29 @@ namespace BinarySortTree
                 return false;
             }
             {
-                if (key < root.data)
+                if (key < root.Data)
                 {
-                    if (root.leftChild == null)
+                    if (root.LeftChild == null)
                     {
                         TreeNode newNode = new TreeNode();
-                        newNode.data = key;
-                        root.leftChild = newNode;
+                        newNode.Data = key;
+                        root.LeftChild = newNode;
                         return true;
                     }
                     else
-                    { return InsertKey(root.leftChild, key); }
+                    { return InsertKey(root.LeftChild, key); }
                 }
                 else
                 {
-                    if (root.rightChild == null)
+                    if (root.RightChild == null)
                     {
                         TreeNode newNode = new TreeNode();
-                        newNode.data = key;
-                        root.rightChild = newNode;
+                        newNode.Data = key;
+                        root.RightChild = newNode;
                         return true;
                     }
                     else
-                    { return InsertKey(root.rightChild, key); }
+                    { return InsertKey(root.RightChild, key); }
                 }
             }
         }
@@ -99,59 +99,63 @@ namespace BinarySortTree
         {
             if (root == null)
             { return false; }
-            if (key == root.data)
+            if (key == root.Data)
             {
                 return Delete(root);
             }
-            else if (key < root.data)
+            else if (key < root.Data)
             {
-                return DeleteBST(root.leftChild, key);
+                return DeleteBST(root.LeftChild, key);
             }
             else
             {
-                return DeleteBST(root.rightChild, key);
+                return DeleteBST(root.RightChild, key);
             }
         }
 
         public static bool Delete(TreeNode node)
         {
-            if (node.rightChild == null)//只有左子树
+            if (node.RightChild == null)//只有左子树
             {
-                node = node.leftChild;
+                node = node.LeftChild;
             }
-            else if (node.leftChild == null)//只有右子树
+            else if (node.LeftChild == null)//只有右子树
             {
-                node = node.rightChild;
+                node = node.RightChild;
             }
             else
             {
-                TreeNode temp = node.leftChild;//node的直接前驱
+                TreeNode temp = node.LeftChild;//node的直接前驱
                 TreeNode frontNode = node;//temp的父节点
-                while (temp.rightChild != null)
+                while (temp.RightChild != null)
                 {
                     frontNode = temp;
-                    temp = temp.rightChild;
+                    temp = temp.RightChild;
                 }
-                node.data = temp.data;
+                node.Data = temp.Data;
                 if (frontNode != node)
                 {
-                    frontNode.rightChild = temp.leftChild;
+                    frontNode.RightChild = temp.LeftChild;
                 }
                 else
                 {
-                    frontNode.leftChild = temp.leftChild;
+                    frontNode.LeftChild = temp.LeftChild;
                 }
 
             }
             return true;
         }
+
+
+
+
     }
 
     public class TreeNode
     {
-        public int data;
-        public TreeNode leftChild;
-        public TreeNode rightChild;
+        public int Data;
+        public TreeNode LeftChild;
+        public TreeNode RightChild;
 
 
     }
