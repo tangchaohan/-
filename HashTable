@@ -1,0 +1,66 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace HashSearch
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+           InitHashTable(20);
+           InsertHash(7);
+           InsertHash(40);
+           InsertHash(5);
+           InsertHash(15);
+           InsertHash(26);
+           InsertHash(33);
+           InsertHash(751);
+           Console.WriteLine(SearchHash(15));
+           Console.WriteLine(SearchHash(90));
+           Console.ReadKey();
+
+        }
+
+        private static int? [] hashTable;
+
+        private static void InitHashTable(int length)
+        {
+            hashTable = new int?[length];
+            for (int i = 0; i < length; i++)
+            {
+                hashTable[i] = null;
+            }
+        }
+
+        private static int Hash(int key)
+        {
+            return key % hashTable.Length; 
+        }
+
+        private static void InsertHash(int key)
+        {
+            int address = Hash(key);
+            while (hashTable[address] != null)
+            {
+                address = (address + 1) % hashTable.Length;
+            }
+            hashTable[address] = key;
+        }
+
+        private static bool SearchHash(int key)
+        {
+            int address = Hash(key);
+            while (hashTable[address] != key)
+            {
+                address = (address + 1) % hashTable.Length;
+                if (hashTable[address] == null || address == Hash(key))//如果循环起点，说明不存在
+                { return false; }
+            }
+            return true;
+        }
+    }
+
+   
+}
