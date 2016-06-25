@@ -1,0 +1,214 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace BinarySortTree
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] a = new int[] { 5, 80, 6, 4, 3, 15, 7, 19, 25, 36, 74, 55, 31, 65, 84 };
+            TreeNode root = null;
+            bool taller = false;
+            for (int i = 0; i < a.Length; i++)
+            {
+                InsertAVL(ref root, a[i], ref taller);
+            }
+            InOrderTraverse(root);
+            Console.ReadKey();
+        }
+
+        const int EH = 0;
+        const int LH = 1;
+        const int RH = -1;
+
+        /// <summary>
+        ///右旋
+        /// </summary>
+        public static void RightRotate(ref TreeNode root)
+        {
+            TreeNode temp = root.LeftChild;
+            root.LeftChild = temp.RightChild;
+            temp.RightChild = root;
+            root = temp;
+        }
+
+        /// <summary>
+        ///左旋
+        /// </summary>
+        public static void LeftRotate(ref TreeNode root)
+        {
+            TreeNode temp = root.RightChild;
+            root.RightChild = temp.LeftChild;
+            temp.LeftChild = root;
+            root = temp;
+        }
+
+        /// <summary>
+        ///右平衡
+        /// </summary>
+        public static void LeftBanlance(ref TreeNode root)
+        {
+            //使用前已默认root的BF大于1
+            switch (root.LeftChild.BF)
+            {
+                case LH: //新节点插在root的左孩子的左子树上，做单右旋处理
+                    root.BF = root.LeftChild.BF = EH;
+                    RightRotate(ref root);
+                    break;
+                case RH://新节点插在root的左孩子的右子树上，做双旋处理
+                    TreeNode temp = root.LeftChild.RightChild;
+                    switch (temp.BF)
+                    {
+                        case EH:
+                            root.BF = root.LeftChild.BF = EH;
+                            break;
+                        case LH:
+                            root.BF = RH;
+                            root.LeftChild.BF = EH;
+                            break;
+                        case RH:
+                            root.BF = EH;
+                            root.LeftChild.BF = LH;
+                            break;
+                    }
+                    temp.BF = EH;
+                    LeftRotate(ref root.LeftChild);
+                    RightRotate(ref root);
+                    break;
+            }
+        }
+
+        /// <summary>
+        ///左平衡
+        /// </summary>
+        public static void RightBanlance(ref TreeNode root)
+        {
+            //使用前已默认root的BF小于-1
+            switch (root.RightChild.BF)
+            {
+                case RH: //新节点插在root的右孩子的右子树上，做单左旋处理
+                    root.BF = root.RightChild.BF = EH;//单旋后都为0
+                    RightRotate(ref root);
+                    break;
+                case LH://新节点插在root的右孩子的左子树上，做双旋处理
+                    TreeNode temp = root.RightChild.LeftChild;
+                    switch (temp.BF)
+                    {
+                        case EH:
+                            root.BF = root.RightChild.BF = EH;
+                            break;
+                        case LH:
+                            root.BF = RH;
+                            root.RightChild.BF = EH;
+                            break;
+                        case RH:
+                            root.BF = LH;
+                            root.RightChild.BF = EH;
+                            break;
+                    }
+                    temp.BF = EH;
+                    RightRotate(ref root.RightChild);
+                    LeftRotate(ref root);
+                    break;
+            }
+        }
+
+        /// <summary>
+        ///插入
+        /// </summary>
+        public static bool InsertAVL(ref TreeNode root, int key, ref bool taller)
+        {
+            if (root == null)
+            {
+                root = new TreeNode();
+                root.Data = key;
+                root.BF = EH;
+                taller = true;
+            }
+            else
+            {
+                if (key == root.Data)
+                {
+                    taller = false;
+                    return false;
+                }
+                else if (key < root.Data)
+                {
+                    if (!InsertAVL(ref root.LeftChild, key, ref taller))
+                    { return false; }
+                    if (taller)//已经插入到root的左子树中且左子树长高
+                    {
+                        switch (root.BF)
+                        {
+                            case LH:
+                                LeftBanlance(ref root);
+                                taller = false;
+                                break;
+                            case EH:
+                                root.BF = LH;
+                                taller = true;
+                                break;
+                            case RH:
+                                root.BF = EH;
+                                taller = false;
+                                break;
+                        }
+ 
+                    }
+                }
+                else
+                {
+                    if (!InsertAVL(ref root.RightChild, key, ref taller))
+                    { return false; }
+                    if (taller)
+                    {
+                        switch (root.BF)
+                        {
+                            case LH:
+                                root.BF = EH;
+                                taller = false;
+                                break;
+                            case EH:
+                                root.BF = RH;
+                                taller = true;
+                                break;
+                            case RH:
+                                RightBanlance(ref root);
+                                taller = false;
+                                break;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        ///二叉树中序遍历
+        /// </summary>
+        public static  void InOrderTraverse(TreeNode root)
+        {
+            if (root == null)
+            { return; }
+            else
+            {
+                InOrderTraverse(root.LeftChild);
+                Console.WriteLine(root.Data);
+                InOrderTraverse(root.RightChild);
+            }
+        }
+    }
+
+    public class TreeNode
+    {
+        public int Data;
+        public int BF;
+        public TreeNode LeftChild;
+        public TreeNode RightChild;
+
+
+    }
+}
