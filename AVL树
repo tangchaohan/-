@@ -25,7 +25,7 @@ namespace BinarySortTree
         const int RH = -1;
 
         /// <summary>
-        ///右旋
+        ///右旋，右旋以后P和L的BF都变成0
         /// </summary>
         public static void RightRotate(ref TreeNode root)
         {
@@ -36,7 +36,7 @@ namespace BinarySortTree
         }
 
         /// <summary>
-        ///左旋
+        ///左旋，左旋以后P和R的BF都变成0
         /// </summary>
         public static void LeftRotate(ref TreeNode root)
         {
@@ -66,8 +66,8 @@ namespace BinarySortTree
                             root.BF = root.LeftChild.BF = EH;
                             break;
                         case LH:
-                            root.BF = RH;
-                            root.LeftChild.BF = EH;
+                            root.BF = RH;//变成-1
+                            root.LeftChild.BF = EH;//变成0
                             break;
                         case RH:
                             root.BF = EH;
@@ -121,7 +121,7 @@ namespace BinarySortTree
         /// </summary>
         public static bool InsertAVL(ref TreeNode root, int key, ref bool taller)
         {
-            if (root == null)
+            if (root == null)//节点为空
             {
                 root = new TreeNode();
                 root.Data = key;
@@ -144,7 +144,7 @@ namespace BinarySortTree
                         switch (root.BF)
                         {
                             case LH:
-                                LeftBanlance(ref root);
+                                LeftBanlance(ref root);//旋转
                                 taller = false;
                                 break;
                             case EH:
@@ -176,7 +176,7 @@ namespace BinarySortTree
                                 taller = true;
                                 break;
                             case RH:
-                                RightBanlance(ref root);
+                                RightBanlance(ref root);//旋转
                                 taller = false;
                                 break;
                         }
