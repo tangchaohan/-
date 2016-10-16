@@ -44,7 +44,7 @@ namespace HashSearch
             int address = Hash(key);
             while (hashTable[address] != null)
             {
-                address = (address + 1) % hashTable.Length;
+                address = (address + 1) % hashTable.Length;//是address+1
             }
             hashTable[address] = key;
         }
