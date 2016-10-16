@@ -23,6 +23,7 @@ public static void main(String[] args)
 	public static void DFS(MGraph graph,int j,boolean[]visited)
 	{
 		visited[j]=true;
+		System.out.println(graph.verice[j]);
 		for(int k=0;k<graph.verice.length;k++)
 		{
 			if(graph.edges[j][k]==1 && !visited[k])
