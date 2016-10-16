@@ -38,9 +38,9 @@ namespace StraightInsertionSort
             {
                 if (sortArray[i] < sortArray[i - 1])
                 {
-                    int j, param = sortArray[i];
+                    int param = sortArray[i];
                     //书中数组从1开始，所以设置0为哨兵，这里加一个j>=0的判断
-                    for ( j = i - 1; j>=0 && sortArray[j] > param; j--)
+                    for (int j = i - 1; j>=0 && sortArray[j] > param; j--)
                     {
                         sortArray[j + 1] = sortArray[j];
                     }
