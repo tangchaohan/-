@@ -1,0 +1,31 @@
+public static void MiniSpanTree_Kruskal(MGraph graph)
+	{
+		Edge[] edges=new Edge[graph.verice.length];
+		int[] parent=new int[graph.verice.length];
+		//此处省略将邻接矩阵转化为边集数组edge并按权从小到大排序的代码
+		for(int i=0;i<parent.length;i++)//初始化
+		{
+			parent[i]=0;
+		}
+		//
+		for(int j=0;j<edges.length;j++)
+		{
+			int n=Find(parent, edges[j].begin);
+			int m=Find(parent, edges[j].end);
+			if(n!=m)//如果n不等于m，说明此变没有与现成生成树形成环路
+			{
+				parent[n]=m;//将此边的结尾点放入下标为起点的parent中
+				System.out.println(edges[j].begin+","+edges[j].end+","+edges[j].weight);
+			}
+		}
+		
+	}
+	//查找连线顶点的尾部下标
+	public static int Find(int[] parent,int f)
+	{
+		while (parent[f]>0)
+		{
+			f=parent[f];
+		}
+		return f;
+	}
