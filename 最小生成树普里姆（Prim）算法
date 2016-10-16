@@ -1,0 +1,40 @@
+public static void MiniSpanTree_Prim(MGraph graph)
+{
+		int []adjvex=new int[graph.verice.length];//保存相关顶点的下标
+		int [] lowcost=new int[graph.verice.length];//保存相关顶点间边的权值
+		lowcost[0]=0;//第0个点已经找到
+		int infinity=65535;//默认不可能的最大值
+		int min=0;
+		for(int i=1;i<graph.verice.length;i++)//取第一个点所有的边的权值
+		{
+			lowcost[i]=graph.edges[0][i];
+			adjvex[i]=0;
+		}
+		//
+		for(int i=0;i<graph.verice.length;i++)//找出lowcost里面的最小值，k是其下标
+		{
+			min=infinity;
+			int j=1,k=0;
+			while (j<graph.verice.length)//循坏所有顶点
+			{
+				if(lowcost[j]!=0&&lowcost[j]<min)
+				{
+					min=lowcost[j];
+					k=j;
+				}
+				j++;
+				
+			}
+			System.out.println(adjvex[k]+","+k);//打印
+			//
+			lowcost[k]=0;
+			for(int m=1;m<graph.verice.length;m++)//循环所有顶点
+			{
+				if(lowcost[m]!=0&&graph.edges[k][m]<lowcost[j])
+				{
+					lowcost[m]=graph.edges[k][m];//更新更小的权值
+					adjvex[m]=k;//将下标存入adjvex
+				}
+			}
+		}
+}
